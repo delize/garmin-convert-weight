@@ -1,4 +1,6 @@
 import pandas as pd
+import os
+import argparse
 
 
 def load_file(file_path):
@@ -62,33 +64,41 @@ def process_data(data):
         return None
 
 
-def save_file(data, output_path):
+def save_file(data, output_path, append=True):
     """
-    Save the processed data to a new CSV file.
+    Save the processed data to a CSV file. Append by default, overwrite if specified.
     """
     print(f"\nSaving processed data to: {output_path}")
     try:
-        data.to_csv(output_path, index=False)
-        print("Data saved successfully!")
+        if append and os.path.exists(output_path):
+            # Append without writing the header again
+            data.to_csv(output_path, mode='a', header=False, index=False)
+            print("Data appended successfully!")
+        else:
+            # Write the file with headers if not appending
+            data.to_csv(output_path, index=False)
+            print("Data saved successfully!")
     except Exception as e:
         print(f"Error saving file: {e}")
 
 
 if __name__ == "__main__":
-    import sys
+    parser = argparse.ArgumentParser(description="Process and save Garmin weight data.")
+    parser.add_argument("input_file", help="Path to the input CSV file.")
+    parser.add_argument("output_file", help="Path to the output CSV file.")
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Overwrite the output file if it exists. Default is to append."
+    )
 
-    if len(sys.argv) != 3:
-        print("Usage: python3 garmin-convert-weight.py <input_file> <output_file>")
-        sys.exit(1)
-
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
+    args = parser.parse_args()
 
     # Load the raw data
-    raw_data = load_file(input_file)
+    raw_data = load_file(args.input_file)
     if raw_data is not None:
         # Process the data into the desired format
         cleaned_data = process_data(raw_data)
         if cleaned_data is not None:
-            # Save the processed data
-            save_file(cleaned_data, output_file)
+            # Save the processed data, defaulting to append unless overwrite is specified
+            save_file(cleaned_data, args.output_file, append=not args.overwrite)

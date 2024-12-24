@@ -5,6 +5,11 @@ on:
     types:
       - published
 
+permissions:
+  contents: write
+  packages: write
+  deployments: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -26,12 +31,9 @@ jobs:
     - name: Build executable
       run: |
         pyinstaller --onefile garmin-convert-weight.py
-      # Save the binary in a variable for reuse
-      env:
-        BINARY_PATH: dist/garmin-convert-weight
 
     - name: Upload binary as artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: garmin-convert-weight
         path: dist/garmin-convert-weight

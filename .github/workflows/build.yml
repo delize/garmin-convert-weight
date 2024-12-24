@@ -31,12 +31,13 @@ jobs:
     - name: Build executable
       run: |
         pyinstaller --onefile garmin-convert-weight.py
+        echo "binary_path=dist/garmin-convert-weight" >> $GITHUB_ENV
 
     - name: Upload binary as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: garmin-convert-weight
-        path: dist/garmin-convert-weight
+        path: ${{ env.binary_path }}
 
     - name: Attach binary to release
       uses: actions/upload-release-asset@v1
@@ -44,6 +45,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: dist/garmin-convert-weight
+        asset_path: ${{ env.binary_path }}
         asset_name: garmin-convert-weight
         asset_content_type: application/octet-stream

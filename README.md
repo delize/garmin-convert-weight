@@ -1,6 +1,6 @@
 # Garmin Weight Conversion Script
 
-The `garmin-convert-weight.py` script processes Garmin CSV files containing weight data and converts them into a structured, date-aligned format. This is especially useful for appending new data to an existing dataset or transforming the data for further analysis.
+The `garmin-convert-weight.py` script processes Garmin CSV files containing weight data and converts them into a structured, date-aligned format. I created this, mainly because I couldn't find an alternative for what I needed. Which was just a pure CSV file that I could then make graphs and data out of, without Jupyter notebook or something else. 
 
 ---
 
@@ -43,7 +43,7 @@ python3 garmin-convert-weight.py input.csv output.csv --overwrite
 
 ## Input Format
 
-The input CSV file should contain raw Garmin weight data with the following structure:
+The input CSV file should contain raw Garmin weight data with the following structure (note: This works for Muscle Mass, Bone Mass, and Body Water as well, even though not shown below):
 
 | Time          | Weight   | Change   | BMI  | Body Fat | Skeletal Muscle Mass | Bone Mass | Body Water |
 |---------------|----------|----------|------|----------|-----------------------|-----------|------------|

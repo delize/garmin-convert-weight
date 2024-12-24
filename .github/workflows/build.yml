@@ -31,7 +31,7 @@ jobs:
         BINARY_PATH: dist/garmin-convert-weight
 
     - name: Upload binary as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: garmin-convert-weight
         path: dist/garmin-convert-weight
